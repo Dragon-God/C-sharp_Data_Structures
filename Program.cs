@@ -9,7 +9,7 @@ namespace DataStructures
     {
         static void Main(string[] args)
         {
-            LinkedList<int> list = new LinkedList<int>();
+            LinkedList<int, SingleNode<int>> list = new LinkedList<int, SingleNode<int>>();
             list.AddHeadNode(0);
 
             for (int i = 1; i < 10; i++)
@@ -18,14 +18,14 @@ namespace DataStructures
             }
             Console.WriteLine(list);
 
-            Node<int> current = list.Head;
-            for (int i = 0; i < 10; i++, current = current.Next.Next)
+            SingleNode<int> current = list.Head;
+            for (int i = 0; i < 10; i++, current = (SingleNode<int>)current.Next.Next)
             {
                 list.AddNodeAfter(current, 0 - current.Data);
             }
             Console.WriteLine(list);
 
-            foreach (Node<int> node in list)
+            foreach (SingleNode<int> node in list)
             {
                 if (node.Data >= 0)
                     list.RemoveNodeAfter(node);

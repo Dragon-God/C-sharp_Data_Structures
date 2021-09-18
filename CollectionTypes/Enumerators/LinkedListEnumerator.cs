@@ -6,21 +6,21 @@ using SimpleTypes;
 
 namespace CollectionTypes
 {
-    public partial class LinkedList<TData>
+    public partial class LinkedList<TData, TNode>
     {
-        internal class LinkedListEnumerator: IEnumerator<Node<TData>>
+        internal class LinkedListEnumerator: IEnumerator<TNode>
         {
-            private Node<TData> _current;
-            private readonly Node<TData> _start;
+            private TNode _current;
+            private readonly TNode _start;
 
-            public Node<TData> Current => _current;
+            public TNode Current => _current;
             
             // Implementing `IEnumerator<T>` requires an implementation of `IEnumerator`
             object IEnumerator.Current => this.Current;   // Explicit interface specifications don't have any access specifiers
 
-            public LinkedListEnumerator(Node<TData> head)
+            public LinkedListEnumerator(TNode head)
             {
-                _current = _start = new Node<TData>(default(TData));
+                _current = _start = new TNode() { Data = default(TData) };
                 _start.Next = _current.Next = head;
             }
 
@@ -31,7 +31,7 @@ namespace CollectionTypes
                 if (_current.Next is null)
                     keepGoing = false;
 
-                _current = _current.Next;
+                _current = (TNode)_current.Next;
                 
                 return keepGoing;
             }

@@ -6,10 +6,10 @@ using SimpleTypes;
 
 namespace CollectionTypes
 {
-    public partial class LinkedList<TData>: IEnumerable<Node<TData>>
+    public partial class LinkedList<TData, TNode>: IEnumerable<TNode> where TNode: Node<TData>, new()
     {
-        public Node<TData> Head { get; private set; }
-        public Node<TData> Tail { get; private set; }
+        public TNode Head { get; internal set; }
+        public TNode Tail { get; internal set; }
 
         public LinkedList()
         {
@@ -19,7 +19,7 @@ namespace CollectionTypes
         #region List API
         public void AddHeadNode(TData data)
         {
-            Node<TData> newHead = new Node<TData>(data);
+            TNode newHead = new TNode() { Data = data };
 
             if (Head is null)
                 Tail = newHead;
@@ -31,7 +31,7 @@ namespace CollectionTypes
 
         public void AddTailNode(TData data)
         {
-            Node<TData> newTail = new Node<TData>(data);
+            TNode newTail = new TNode() { Data = data };
 
             if (Tail is null)
                 Head = newTail;
@@ -41,12 +41,12 @@ namespace CollectionTypes
             Tail = newTail;
         }
 
-        public void AddNodeAfter(Node<TData> target, TData data)
+        public void AddNodeAfter(TNode target, TData data)
         {
-            Node<TData> newNode = new Node<TData>(data);
+            TNode newTNode = new TNode() { Data = data };
 
-            newNode.Next = target.Next;
-            target.Next = newNode;
+            newTNode.Next = target.Next;
+            target.Next = newTNode;
         }
 
         public void RemoveHeadNode()
@@ -54,10 +54,10 @@ namespace CollectionTypes
             if (Head is null)
                 throw new InvalidOperationException("Can't remove from an empty list!");
             
-            Head = Head.Next;
+            Head = (TNode)Head.Next;
         }
 
-        public void RemoveNodeAfter(Node<TData> target)
+        public void RemoveNodeAfter(TNode target)
         {
             if (target is null || target.Next is null)
                 return;
@@ -67,7 +67,7 @@ namespace CollectionTypes
         #endregion
         
         #region Interface Implementations
-        public IEnumerator<Node<TData>> GetEnumerator()
+        public IEnumerator<TNode> GetEnumerator()
         {
             return new LinkedListEnumerator(Head);
         }
