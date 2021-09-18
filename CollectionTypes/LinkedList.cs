@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,7 +7,7 @@ using CollectionTypes.Enumerators;
 
 namespace CollectionTypes
 {
-    public class LinkedList<TData>: IEnumerable<TData>
+    public class LinkedList<TData, TNode>: IEnumerable<TNode> where TNode: Node<TData>, new()
     {
         public Node<TData> Head { get; set; }
         public Node<TData> Tail { get; set; }
@@ -17,7 +18,7 @@ namespace CollectionTypes
         }
 
         #region List API
-        public void AddHead(TData data)
+        public void AddHeadNode(TData data)
         {
             Node<TData> newHead = new Node<TData>(data);
 
@@ -29,7 +30,7 @@ namespace CollectionTypes
             Head = newHead;
         }
 
-        public void AddTail(TData data)
+        public void AddTailNode(TData data)
         {
             Node<TData> newTail = new Node<TData>(data);
 
@@ -40,12 +41,36 @@ namespace CollectionTypes
 
             Tail = newTail;
         }
+
+        public void AddNodeAfter(Node<TData> target, TData data)
+        {
+            Node<TData> newNode = new Node<TData>(data);
+
+            newNode.Next = target.Next;
+            target.Next = newNode;
+        }
+
+        public void RemoveHeadNode()
+        {
+            if (Head is null)
+                throw new InvalidOperationException("Can't remove from an empty list!");
+            
+            Head = Head.Next;
+        }
+
+        public void RemoveNodeAfter(Node<TData> target)
+        {
+            if (target is null || target.Next is null)
+                return;
+
+            target.Next = target.Next.Next;
+        }
         #endregion
         
         #region Interface Implementations
-        public IEnumerator<TData> GetEnumerator()
+        public IEnumerator<TNode> GetEnumerator()
         {
-            return new LinkedListEnumerator<TData>(Head);
+            return (IEnumerator<TNode>)new LinkedListEnumerator<TData, Node<TData>>(Head);
         }
 
         // Implementing `IEnumerable<T>` requires an implementation of `IEnumerable`
@@ -57,14 +82,7 @@ namespace CollectionTypes
 
         public override string ToString()
         {
-            string result = "";
-
-            foreach (TData item in this)
-            {
-                result += item.ToString() + ", ";
-            }
-
-            return result.TrimEnd(new char[]{' ', ','});
+            return string.Join(", ", this);
         }
     }
 }

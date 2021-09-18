@@ -5,6 +5,7 @@ namespace SimpleTypes
         public TData Data { get; set; }
         public Node<TData> Next { get; set; }
 
+        public Node() { }
         public Node(TData data)
         {
             Data = data;
