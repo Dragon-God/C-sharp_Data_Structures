@@ -9,7 +9,6 @@ namespace CollectionTypes.Enumerators
     {
         private TNode _current;
         private readonly TNode _start;
-        private bool _isDisposed;
 
         public TNode Current { get => _current; }
         
@@ -20,7 +19,6 @@ namespace CollectionTypes.Enumerators
         {
             _current = _start = (TNode)new Node<TData>(default(TData));
             _start.Next = _current.Next = head;
-            _isDisposed = false;
         }
 
         public bool MoveNext()
@@ -40,28 +38,6 @@ namespace CollectionTypes.Enumerators
             _current = _start;
         }
 
-        public void Dispose()
-        {
-            // Dispose of unmanaged resources
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_isDisposed)
-                return;
-            
-            if (disposing)
-            {
-                // Dispose of unmanaged resources
-            }
-
-            _isDisposed = true;
-        }
-
-        ~LinkedListEnumerator()
-        {
-            Dispose(false);
-        }
+        void IDisposable.Dispose(){}
     }
 }

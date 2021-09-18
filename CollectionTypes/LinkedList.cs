@@ -9,8 +9,8 @@ namespace CollectionTypes
 {
     public class LinkedList<TData, TNode>: IEnumerable<TNode> where TNode: Node<TData>, new()
     {
-        public Node<TData> Head { get; set; }
-        public Node<TData> Tail { get; set; }
+        public Node<TData> Head { get; private set; }
+        public Node<TData> Tail { get; private set; }
 
         public LinkedList()
         {
