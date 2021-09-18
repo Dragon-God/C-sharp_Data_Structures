@@ -9,7 +9,7 @@ namespace DataStructures
     {
         static void Main(string[] args)
         {
-            LinkedList<int, Node<int>> list = new LinkedList<int, Node<int>>();
+            LinkedList<int> list = new LinkedList<int>();
             list.AddHeadNode(0);
 
             for (int i = 1; i < 10; i++)

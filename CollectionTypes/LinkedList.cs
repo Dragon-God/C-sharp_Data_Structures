@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using SimpleTypes;
-using CollectionTypes.Enumerators;
 
 namespace CollectionTypes
 {
-    public class LinkedList<TData, TNode>: IEnumerable<TNode> where TNode: Node<TData>, new()
+    public partial class LinkedList<TData>: IEnumerable<Node<TData>>
     {
         public Node<TData> Head { get; private set; }
         public Node<TData> Tail { get; private set; }
@@ -68,9 +67,9 @@ namespace CollectionTypes
         #endregion
         
         #region Interface Implementations
-        public IEnumerator<TNode> GetEnumerator()
+        public IEnumerator<Node<TData>> GetEnumerator()
         {
-            return (IEnumerator<TNode>)new LinkedListEnumerator<TData, Node<TData>>(Head);
+            return new LinkedListEnumerator(Head);
         }
 
         // Implementing `IEnumerable<T>` requires an implementation of `IEnumerable`

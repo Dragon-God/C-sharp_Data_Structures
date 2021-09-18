@@ -1,43 +1,47 @@
+using System;
 using System.Collections.Generic;
 using System.Collections;
 
 using SimpleTypes;
 
-namespace CollectionTypes.Enumerators
+namespace CollectionTypes
 {
-    internal class LinkedListEnumerator<TData, TNode>: IEnumerator<TNode> where TNode: Node<TData>, new()
+    public partial class LinkedList<TData>
     {
-        private TNode _current;
-        private readonly TNode _start;
-
-        public TNode Current { get => _current; }
-        
-        // Implementing `IEnumerator<T>` requires an implementation of `IEnumerator`
-        object IEnumerator.Current { get => this.Current; }    // Explicit interface specifications don't have any access specifiers
-
-        public LinkedListEnumerator(Node<TData> head)
+        internal class LinkedListEnumerator: IEnumerator<Node<TData>>
         {
-            _current = _start = (TNode)new Node<TData>(default(TData));
-            _start.Next = _current.Next = head;
-        }
+            private Node<TData> _current;
+            private readonly Node<TData> _start;
 
-        public bool MoveNext()
-        {
-            bool keepGoing = true;
-
-            if (_current.Next is null)
-                keepGoing = false;
-
-            _current = (TNode)_current.Next;
+            public Node<TData> Current => _current;
             
-            return keepGoing;
-        }
+            // Implementing `IEnumerator<T>` requires an implementation of `IEnumerator`
+            object IEnumerator.Current => this.Current;   // Explicit interface specifications don't have any access specifiers
 
-        public void Reset()
-        {
-            _current = _start;
-        }
+            public LinkedListEnumerator(Node<TData> head)
+            {
+                _current = _start = new Node<TData>(default(TData));
+                _start.Next = _current.Next = head;
+            }
 
-        void IDisposable.Dispose(){}
+            public bool MoveNext()
+            {
+                bool keepGoing = true;
+
+                if (_current.Next is null)
+                    keepGoing = false;
+
+                _current = _current.Next;
+                
+                return keepGoing;
+            }
+
+            public void Reset()
+            {
+                _current = _start;
+            }
+
+            void IDisposable.Dispose(){}
+        }
     }
 }
